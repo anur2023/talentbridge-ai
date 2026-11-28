@@ -1,0 +1,17 @@
+talentbridge:
+  security:
+    mfa-required: true
+  seed:
+    enabled: false
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
+server:
+  servlet:
+    session:
+      cookie:
+        secure: true

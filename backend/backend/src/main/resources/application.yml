@@ -1,0 +1,79 @@
+spring:
+  application:
+    name: talentbridge
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/talentbridge}
+      auto-index-creation: true
+  session:
+    timeout: 12h
+    mongodb:
+      collection-name: sessions
+  mail:
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:1025}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: ${MAIL_SMTP_AUTH:false}
+          starttls:
+            enable: ${MAIL_SMTP_STARTTLS:false}
+  jackson:
+    default-property-inclusion: non_null
+
+server:
+  port: ${PORT:8080}
+  servlet:
+    session:
+      cookie:
+        http-only: true
+        same-site: lax
+        secure: ${COOKIE_SECURE:false}
+        name: TBSESSION
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+talentbridge:
+  public-base-url: ${PUBLIC_BASE_URL:http://localhost:8080}
+  mail-from: ${MAIL_FROM:noreply@localhost}
+  verification-ttl: 24h
+  password-reset-ttl: 1h
+  stale-after: 14d
+  partner-terms-max-age: 90d
+  privacy-request-due: 30d
+  login-lock-after: 5
+  login-lock-for: 15m
+  jobs:
+    expiry-cron: "0 15 2 * * *"
+  security:
+    mfa-required: true
+  finance:
+    require-second-approver: false
+  seed:
+    enabled: false
+  rate-limit:
+    register: 5
+    login: 10
+    forgot-password: 5
+    referral: 10
+    search: 60
+    support: 5
+
+logging:
+  pattern:
+    level: "%5p [%X{correlationId:-}]"
