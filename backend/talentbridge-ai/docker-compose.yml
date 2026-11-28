@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  mongodb:
+    image: mongo:7
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER:-root}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:-change-me}
+      MONGO_INITDB_DATABASE: talentbridge
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+
+  mailpit:
+    image: axllent/mailpit:latest
+    restart: unless-stopped
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+
+  backend:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+      - mailpit
+    environment:
+      MONGODB_URI: mongodb://${MONGO_ROOT_USER:-root}:${MONGO_ROOT_PASSWORD:-change-me}@mongodb:27017/talentbridge?authSource=admin
+      MAIL_HOST: mailpit
+      MAIL_PORT: 1025
+      MAIL_SMTP_AUTH: "false"
+      MAIL_SMTP_STARTTLS: "false"
+      FRONTEND_BASE_URL: http://localhost:5173
+      CORS_ALLOWED_ORIGINS: http://localhost:5173
+      SEED_ENABLED: "true"
+      SWAGGER_ENABLED: "true"
+    ports:
+      - "8080:8080"
+
+volumes:
+  mongo-data:
