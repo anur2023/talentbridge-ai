@@ -1,0 +1,11 @@
+talentbridge:
+  security:
+    mfa-required: false
+  seed:
+    enabled: false
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false

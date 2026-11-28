@@ -1,0 +1,16 @@
+talentbridge:
+  security:
+    mfa-required: false
+  seed:
+    enabled: true
+    admin-email: editor@example.com
+    admin-password: "Dev-Password-1"
+    super-email: superadmin@example.com
+    super-password: "Dev-Password-1"
+    candidate-password: "Dev-Password-1"
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
